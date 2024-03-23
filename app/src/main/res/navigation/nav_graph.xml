@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.poklad.obriotest.presentation.ui.screens.main_screen.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_bitcoin_costs">
+        <action
+            android:id="@+id/action_mainFragment_to_addTransactionFragment"
+            app:destination="@id/addTransactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTransactionFragment"
+        android:name="com.poklad.obriotest.presentation.ui.screens.add_transaction_screen.AddTransactionFragment"
+        android:label="AddTransactionFragment"
+        tools:layout="@layout/fragment_second_screen"/>
+    <dialog
+        android:id="@+id/depositBitcoinsDialogFragment"
+        android:name="com.poklad.obriotest.presentation.ui.screens.main_screen.DepositBitcoinsDialogFragment"
+        android:label="DepositBitcoinsDialogFragment"
+        tools:layout="@layout/dialog_fragment_deposit_bitcoins" />
+
+</navigation>

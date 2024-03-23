@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="project_padding">16dp</dimen>
+    <dimen name="project_margin">16dp</dimen>
+    <dimen name="project_big_margin">32dp</dimen>
+    <dimen name="project_min_margin">16dp</dimen>
+    <dimen name="balance_text_size">20sp</dimen>
+    <dimen name="transaction_text_size">15sp</dimen>
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ObrioTest</string>
+    <string name="deposit_amount">Deposit amount</string>
+    <string name="transaction_amount">Transaction amount</string>
+    <string name="make_transaction">Make transaction</string>
+    <string name="plus_add">+</string>
+    <string name="s_to_s_rate">%1$s to %2$s: %3$.2f</string>
+    <string name="groceries">Groceries</string>
+    <string name="transaction_list">Transaction List</string>
+    <string name="deposit">Deposit</string>
+    <string name="cancel">Cancel</string>
+    <string name="not_enought_money">Error: Not enough money</string>
+
+    <array name="transaction_categories">
+        <item>Groceries</item>
+        <item>Taxi</item>
+        <item>Electronics</item>
+        <item>Restaurant</item>
+        <item>Other</item>
+    </array>
+
+</resources>
