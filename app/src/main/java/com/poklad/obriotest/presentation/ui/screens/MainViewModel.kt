@@ -12,6 +12,7 @@ import com.poklad.obriotest.presentation.model.TransactionPresentationModel
 import com.poklad.obriotest.presentation.ui.base.BaseViewModel
 import com.poklad.obriotest.utils.CoroutineDispatchersProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -27,8 +28,7 @@ class MainViewModel @Inject constructor(
     private val transactionMultipleUseCases: TransactionMultipleUseCases
 ) : BaseViewModel() {
 
-    private val _transactionHistoryFlow =
-        MutableStateFlow<PagingData<TransactionPresentationModel>?>(null)
+    private val _transactionHistoryFlow = MutableStateFlow<PagingData<TransactionPresentationModel>?>(null)
     val transactionHistoryFlow = _transactionHistoryFlow.filterNotNull()
 
     private val _currencyRateUsdFlow = MutableStateFlow(CurrencyPresentationModel())
@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(
     private val _balanceFlow = MutableStateFlow(BalancePresentationModel())
     val balanceFlow = _balanceFlow.asStateFlow()
 
-    private val _isSucceedTransactionFlow = MutableStateFlow(false)
+    private val _isSucceedTransactionFlow = MutableSharedFlow<Boolean>()
     val isSucceedTransactionFlow = _isSucceedTransactionFlow
 
     init {
@@ -52,35 +52,22 @@ class MainViewModel @Inject constructor(
             }
         }
         viewModelScope.launch(coroutineDispatchersProvider.ioDispatcher + coroutineExceptionHandler) {
-            transactionMultipleUseCases.observeTransactionHistory(TRANSACTION_HISTORY)
+            transactionMultipleUseCases.observeTransactionHistory(20)
                 .cachedIn(this)
                 .collectLatest { _transactionHistoryFlow.value = it }
         }
-
-        initData()
     }
 
-    fun makeTransaction(amount: Float, destination: String) =
-        viewModelScope.launch(coroutineDispatchersProvider.ioDispatcher + coroutineExceptionHandler) {
-            showLoader()
-            val isSucceed = transactionMultipleUseCases.makeTransactionBTC(amount, destination)
-            hideLoader()
-            _isSucceedTransactionFlow.value = isSucceed
-        }
+    fun makeTransaction(amount: Float, destination: String) = viewModelScope.launch(coroutineDispatchersProvider.ioDispatcher + coroutineExceptionHandler) {
+        showLoader()
+        val isSucceed = transactionMultipleUseCases.makeTransactionBTC(amount, destination)
+        hideLoader()
+        _isSucceedTransactionFlow.emit(isSucceed)
+    }
 
     fun getPossibleDestinations() = transactionMultipleUseCases.getPossibleDestinations()
 
-    fun updateBalance(amount: Float) =
-        viewModelScope.launch(coroutineDispatchersProvider.ioDispatcher + coroutineExceptionHandler) {
-            balanceUseCases.depositBTC(amount)
-        }
-
-    private fun initData() =
-        viewModelScope.launch(coroutineDispatchersProvider.ioDispatcher + coroutineExceptionHandler) {
-            currencyUseCases.refreshCurrencyBTC()
-        }
-
-    companion object {
-        const val TRANSACTION_HISTORY = 20
+    fun updateBalance(amount: Float) = viewModelScope.launch(coroutineDispatchersProvider.ioDispatcher + coroutineExceptionHandler) {
+        balanceUseCases.depositBTC(amount)
     }
 }

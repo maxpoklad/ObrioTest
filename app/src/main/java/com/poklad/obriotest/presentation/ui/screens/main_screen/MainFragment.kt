@@ -26,8 +26,7 @@ class MainFragment : BaseFragment<FragmentBitcoinCostsBinding>() {
     @Inject
     internal lateinit var transactionListAdapter: TransactionsListAdapter
 
-    override fun inflateViewBinding(inflater: LayoutInflater) =
-        FragmentBitcoinCostsBinding.inflate(inflater)
+    override fun inflateViewBinding(inflater: LayoutInflater) = FragmentBitcoinCostsBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,12 +38,7 @@ class MainFragment : BaseFragment<FragmentBitcoinCostsBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.currencyRateUsdFlow.collectLatest { currencyUSD ->
                 binding.tvBitcoinToDollarRate.text =
-                    getString(
-                        R.string.s_to_s_rate,
-                        currencyUSD.currency,
-                        currencyUSD.coin,
-                        currencyUSD.rate
-                    )
+                    getString(R.string.s_to_s_rate, currencyUSD.currency, currencyUSD.coin, currencyUSD.rate)
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
@@ -76,11 +70,10 @@ class MainFragment : BaseFragment<FragmentBitcoinCostsBinding>() {
     }
 
     private fun openCreateTransactionScreen() {
-        navigateToFragment(R.id.action_mainFragment_to_addTransactionFragment, null)
+        findNavController().navigate(R.id.action_mainFragment_to_addTransactionFragment)
     }
 
     private fun openDepositDialog() {
-        val depositBitcoinsDialogFragment = DepositBitcoinsDialogFragment()
-        depositBitcoinsDialogFragment.show(parentFragmentManager, depositBitcoinsDialogFragment.tag)
+        findNavController().navigate(R.id.action_mainFragment_to_depositBitcoinsDialogFragment)
     }
 }

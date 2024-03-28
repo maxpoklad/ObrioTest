@@ -32,6 +32,7 @@ data class CurrencyResponse(
 		override val currency: Currencies = Currencies.valueOf(code)
 		override val coins: Coins = coins
 		override val rate: Float = rateFloat
+		override val lastUpdateTime: Long = System.currentTimeMillis()
 	}
 }
 

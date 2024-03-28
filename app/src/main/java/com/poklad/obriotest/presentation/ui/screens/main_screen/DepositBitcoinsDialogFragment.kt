@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.poklad.obriotest.databinding.DialogFragmentDepositBitcoinsBinding
 import com.poklad.obriotest.presentation.ui.screens.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,14 +29,14 @@ class DepositBitcoinsDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnCancel.setOnClickListener {
-            dismiss()
+            findNavController().navigateUp()
         }
         binding.btnDeposit.setOnClickListener {
             val amountText = binding.editTextName.text.toString()
             val amount = amountText.toFloatOrNull()
             if (amount != null) {
                 viewModel.updateBalance(amount)
-                dismiss()
+                findNavController().navigateUp()
             }
         }
     }

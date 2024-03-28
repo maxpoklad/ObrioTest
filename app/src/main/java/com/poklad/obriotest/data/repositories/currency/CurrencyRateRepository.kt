@@ -5,5 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CurrencyRateRepository {
     suspend fun observeCurrencyBTCtoUSD(): Flow<CurrencyDataModel?>
-    suspend fun refreshCurrencyBTC()
+    suspend fun getLastUpdateTime(): Long?
+    suspend fun refreshCurrencyBTC(): Boolean
 }

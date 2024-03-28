@@ -4,4 +4,5 @@ interface CurrencyDataModel {
     val currency: Currencies
     val coins: Coins
     val rate: Float
+    val lastUpdateTime: Long
 }

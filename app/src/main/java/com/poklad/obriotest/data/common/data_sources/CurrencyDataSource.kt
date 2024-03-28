@@ -6,5 +6,5 @@ import com.poklad.obriotest.data.common.models.CurrencyDataModel
 import kotlinx.coroutines.flow.Flow
 
 interface CurrencyDataSource {
-    suspend fun getCurrencyInfo(currency: Currencies, coins: Coins): CurrencyDataModel
+    suspend fun getCurrencyInfo(currency: Currencies, coins: Coins): CurrencyDataModel?
 }

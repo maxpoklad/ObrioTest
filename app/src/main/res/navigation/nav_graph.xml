@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.poklad.obriotest.presentation.ui.screens.main_screen.MainFragment"
@@ -12,12 +13,17 @@
         <action
             android:id="@+id/action_mainFragment_to_addTransactionFragment"
             app:destination="@id/addTransactionFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_depositBitcoinsDialogFragment"
+            app:destination="@id/depositBitcoinsDialogFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/addTransactionFragment"
         android:name="com.poklad.obriotest.presentation.ui.screens.add_transaction_screen.AddTransactionFragment"
         android:label="AddTransactionFragment"
         tools:layout="@layout/fragment_second_screen"/>
+
     <dialog
         android:id="@+id/depositBitcoinsDialogFragment"
         android:name="com.poklad.obriotest.presentation.ui.screens.main_screen.DepositBitcoinsDialogFragment"

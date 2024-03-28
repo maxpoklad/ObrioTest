@@ -16,9 +16,10 @@ class DefaultCurrencyRateRepository @Inject constructor(
     override suspend fun observeCurrencyBTCtoUSD(): Flow<CurrencyDataModel?> =
         cacheDataSource.observerCurrencyInfo(Currencies.USD, Coins.BTC)
 
-    override suspend fun refreshCurrencyBTC() {
-        remoteDataSource.getCurrencyInfo(Currencies.USD, Coins.BTC).also {
-            cacheDataSource.updateCurrencyInfo(it.rate, it.currency, it.coins)
-        }
-    }
+    override suspend fun getLastUpdateTime(): Long? = cacheDataSource.getCurrencyInfo(Currencies.USD, Coins.BTC)?.lastUpdateTime
+
+    override suspend fun refreshCurrencyBTC(): Boolean = remoteDataSource.getCurrencyInfo(Currencies.USD, Coins.BTC)?.let {
+        cacheDataSource.updateCurrencyInfo(it.rate, it.currency, it.coins, System.currentTimeMillis())
+        true
+    } ?: false
 }

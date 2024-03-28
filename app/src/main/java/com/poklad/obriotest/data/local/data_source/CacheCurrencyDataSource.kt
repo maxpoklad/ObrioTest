@@ -11,17 +11,18 @@ import javax.inject.Inject
 
 class CacheCurrencyDataSource @Inject constructor(private val currencyDao: CurrencyDao) : CurrencyDataSource {
 
-    override suspend fun getCurrencyInfo(currency: Currencies, coins: Coins): CurrencyDataModel = currencyDao.getCurrencyInfo(currency, coins)
+    override suspend fun getCurrencyInfo(currency: Currencies, coins: Coins): CurrencyDataModel? = currencyDao.getCurrencyInfo(currency, coins)
 
     suspend fun observerCurrencyInfo(currency: Currencies, coins: Coins): Flow<CurrencyDataModel?> =
         currencyDao.observeCurrencyInfo(currency, coins)
 
-    suspend fun updateCurrencyInfo(rate: Float, currency: Currencies, coins: Coins) = currencyDao.updateCurrencyInfo(
+    suspend fun updateCurrencyInfo(rate: Float, currency: Currencies, coins: Coins, lastUpdateTime: Long) = currencyDao.updateCurrencyInfo(
         CurrencyEntity(
             id = coins.name + currency.name,
             rate = rate,
             currency = currency,
-            coins = coins
+            coins = coins,
+            lastUpdateTime = lastUpdateTime
         )
     )
 

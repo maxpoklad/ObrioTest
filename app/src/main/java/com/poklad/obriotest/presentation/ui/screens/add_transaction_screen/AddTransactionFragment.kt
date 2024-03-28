@@ -6,13 +6,15 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.poklad.obriotest.R
 import com.poklad.obriotest.databinding.FragmentSecondScreenBinding
 import com.poklad.obriotest.presentation.ui.base.BaseFragment
 import com.poklad.obriotest.presentation.ui.screens.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -35,13 +37,16 @@ class AddTransactionFragment : BaseFragment<FragmentSecondScreenBinding>() {
             val destination = binding.spinnerTransactionCategory.selectedItem.toString()
             val amount = binding.etTransactionAmount.editText?.text?.toString()?.takeIf { it.isNotBlank() }?.toFloatOrNull()
             if (amount != null && destination.isNotBlank()) {
-                viewModel.makeTransaction(amount, destination)
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.isSucceedTransactionFlow.collectLatest { isSucceed ->
-                        if (isSucceed) findNavController().popBackStack()
-                        else Toast.makeText(requireContext(), getString(R.string.not_enought_money), Toast.LENGTH_SHORT).show()
+                        if (isSucceed) {
+                            findNavController().navigateUp()
+                        } else {
+                            Toast.makeText(requireContext(), "Error: Not enough money", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
+                viewModel.makeTransaction(amount, destination)
             }
         }
     }
